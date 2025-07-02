@@ -39,8 +39,11 @@ public ResponseEntity<?> logFood(@RequestBody FoodLogRequest foodLogRequest) {
             .orElseThrow(() -> new RuntimeException("User not found"));
 
     // Get the Food entity using the foodId from the request
-    Food food = foodService.getFoodById(foodLogRequest.getFoodId())
-            .orElseThrow(() -> new RuntimeException("Food not found"));
+    Food food = foodService.getFoodById(foodLogRequest.getFoodId());
+if (food == null) {
+    throw new RuntimeException("Food not found");
+}
+
 
     FoodLog foodLog = foodService.logFood(
         user, 
