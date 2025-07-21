@@ -2,16 +2,37 @@ package com.fittrack.api.dto;
 
 import com.fittrack.api.model.MacroGoals;
 
+import jakarta.validation.constraints.*;
+
 public class UserUpdateRequest {
+    @Size(max = 50)
     private String name;
+
+    @Min(0)
+    @Max(150)
     private Integer age;
+
+    @Pattern(regexp = "MALE|FEMALE|OTHER", message = "Gender must be MALE, FEMALE, or OTHER")
     private String gender;
+
+    @DecimalMin("0.0")
     private Double height;
+
+    @DecimalMin("0.0")
     private Double weight;
+
+    @DecimalMin("0.0")
     private Double goalWeight;
+
+    @Pattern(regexp = "SEDENTARY|LIGHT|MODERATE|ACTIVE|VERY_ACTIVE", message = "Invalid activity level")
     private String activityLevel;
+
+    @Pattern(regexp = "LOSE|GAIN|TONE|MAINTAIN", message = "Invalid goal")
     private String goal;
+
+    @Min(0)
     private Integer dailyCalorieGoal;
+
     private MacroGoals macroGoals;
 
     // Getters and Setters

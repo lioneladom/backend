@@ -41,25 +41,4 @@ public class Exercise {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-    // Explicit getters for fields accessed by ExerciseService
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getMuscleGroup() {
-        return muscleGroup;
-    }
-
-    public String getEquipment() {
-        return equipment;
-    }
-
-    public String getDifficulty() {
-        return difficulty;
-    }
 }

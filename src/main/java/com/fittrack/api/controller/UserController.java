@@ -1,6 +1,7 @@
 package com.fittrack.api.controller;
 
 import com.fittrack.api.dto.response.ApiResponse;
+import com.fittrack.api.exception.UserNotFoundException;
 import com.fittrack.api.model.User;
 import com.fittrack.api.dto.UserProfileDto;
 import com.fittrack.api.dto.UserUpdateRequest;
@@ -25,7 +26,7 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<UserProfileDto> getCurrentUser(@CurrentUser UserPrincipal currentUser) {
         User user = userRepository.findById(currentUser.getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         
         UserProfileDto userProfile = new UserProfileDto(
                 user.getId(),
@@ -50,7 +51,7 @@ public class UserController {
     public ResponseEntity<?> updateUser(@CurrentUser UserPrincipal currentUser,
                                         @RequestBody UserUpdateRequest updateRequest) {
         User user = userRepository.findById(currentUser.getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         
         if (updateRequest.getName() != null) {
             user.setName(updateRequest.getName());
@@ -89,9 +90,13 @@ public class UserController {
         }
         
         if (updateRequest.getMacroGoals() != null) {
-            user.getMacroGoals().setProtein(updateRequest.getMacroGoals().getProtein());
-            user.getMacroGoals().setCarbs(updateRequest.getMacroGoals().getCarbs());
-            user.getMacroGoals().setFat(updateRequest.getMacroGoals().getFat());
+            if (user.getMacroGoals() == null) {
+                user.setMacroGoals(updateRequest.getMacroGoals());
+            } else {
+                user.getMacroGoals().setProtein(updateRequest.getMacroGoals().getProtein());
+                user.getMacroGoals().setCarbs(updateRequest.getMacroGoals().getCarbs());
+                user.getMacroGoals().setFat(updateRequest.getMacroGoals().getFat());
+            }
         }
         
         userRepository.save(user);

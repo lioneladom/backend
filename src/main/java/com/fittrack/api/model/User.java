@@ -1,5 +1,6 @@
 package com.fittrack.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -35,8 +36,8 @@ public class User {
     @Email
     private String email;
 
-    private Double height; // in cm
-    private Double weight; // in kg
+    private Double height;
+    private Double weight;
     private Date dateOfBirth;
     private String sex;
     private String country;
@@ -44,20 +45,20 @@ public class User {
     private Double goalWeight;
     private String weeklyGoal;
     private Integer dailyCalorieGoal;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "macro_goals_id", referencedColumnName = "id")
     private MacroGoals macroGoals;
 
     @ElementCollection
     private Set<String> goals = new HashSet<>();
-    
+
     @ElementCollection
     private Set<String> goalReasons = new HashSet<>();
-    
+
     @ElementCollection
     private Set<String> healthBenefits = new HashSet<>();
-    
+
     private String referralSource;
 
     @CreationTimestamp
@@ -68,15 +69,19 @@ public class User {
     private Date updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<FoodLog> foodLogs = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<ExerciseLog> exerciseLogs = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<WeightLog> weightLogs = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<MealEntry> mealEntries = new HashSet<>();
 
     public enum Gender {
@@ -91,7 +96,7 @@ public class User {
         LOSE, GAIN, TONE, MAINTAIN
     }
 
-    // Getters
+    // Custom getter for age since it is calculated
     public Integer getAge() {
         if (dateOfBirth == null) return null;
         return Period.between(
@@ -100,27 +105,7 @@ public class User {
         ).getYears();
     }
 
-    public String getGender() {
-        return this.sex;
-    }
-
-    public String getGoal() {
-        return this.weeklyGoal;
-    }
-
-    public String getActivityLevel() {
-        return this.activityLevel;
-    }
-
-    public Integer getDailyCalorieGoal() {
-        return this.dailyCalorieGoal;
-    }
-
-    public MacroGoals getMacroGoals() {
-        return this.macroGoals;
-    }
-
-    // Setters
+    // Custom setter for age to set dateOfBirth accordingly
     public void setAge(Integer age) {
         if (age == null) {
             this.dateOfBirth = null;
@@ -131,20 +116,37 @@ public class User {
         this.dateOfBirth = cal.getTime();
     }
 
+    // Custom getter and setter for gender mapping to sex field
+    public String getGender() {
+        return this.sex;
+    }
+
     public void setGender(String gender) {
         this.sex = gender;
     }
 
+    // Overloaded setter for gender enum
     public void setGender(Gender gender) {
         this.sex = gender != null ? gender.name() : null;
+    }
+
+    // Custom getter and setter for goal mapping to weeklyGoal field
+    public String getGoal() {
+        return this.weeklyGoal;
     }
 
     public void setGoal(String goal) {
         this.weeklyGoal = goal;
     }
 
+    // Overloaded setter for goal enum
     public void setGoal(Goal goal) {
         this.weeklyGoal = goal != null ? goal.name() : null;
+    }
+
+    // Custom getter and setter for activityLevel field with enum overload
+    public String getActivityLevel() {
+        return this.activityLevel;
     }
 
     public void setActivityLevel(String activityLevel) {
@@ -153,118 +155,5 @@ public class User {
 
     public void setActivityLevel(ActivityLevel activityLevel) {
         this.activityLevel = activityLevel != null ? activityLevel.name() : null;
-    }
-
-    public void setDailyCalorieGoal(Integer dailyCalorieGoal) {
-        this.dailyCalorieGoal = dailyCalorieGoal;
-    }
-
-    public void setMacroGoals(MacroGoals macroGoals) {
-        this.macroGoals = macroGoals;
-    }
-
-    // Basic getters and setters (handled by @Data but explicitly defined for clarity)
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Double getHeight() {
-        return height;
-    }
-
-    public void setHeight(Double height) {
-        this.height = height;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    public Double getGoalWeight() {
-        return goalWeight;
-    }
-
-    public void setGoalWeight(Double goalWeight) {
-        this.goalWeight = goalWeight;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getReferralSource() {
-        return referralSource;
-    }
-
-    public void setReferralSource(String referralSource) {
-        this.referralSource = referralSource;
-    }
-
-    public Set<String> getGoals() {
-        return goals;
-    }
-
-    public void setGoals(Set<String> goals) {
-        this.goals = goals;
-    }
-
-    public Set<String> getGoalReasons() {
-        return goalReasons;
-    }
-
-    public void setGoalReasons(Set<String> goalReasons) {
-        this.goalReasons = goalReasons;
-    }
-
-    public Set<String> getHealthBenefits() {
-        return healthBenefits;
-    }
-
-    public void setHealthBenefits(Set<String> healthBenefits) {
-        this.healthBenefits = healthBenefits;
     }
 }

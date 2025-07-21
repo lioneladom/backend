@@ -7,12 +7,14 @@ import com.fittrack.api.dto.response.JwtResponse;
 import com.fittrack.api.dto.response.ApiResponse;
 import com.fittrack.api.model.User;
 import com.fittrack.api.dto.response.MessageResponse;
+import com.fittrack.api.exception.EmailAlreadyExistsException;
 import com.fittrack.api.repository.UserRepository;
 import com.fittrack.api.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,18 +35,22 @@ public class AuthService {
     JwtUtils jwtUtils;
 
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtUtils.generateJwtToken(authentication);
 
-        return new JwtResponse(jwt);
+            return new JwtResponse(jwt);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Invalid email or password");
+        }
     }
 
     public MessageResponse registerUser(SignupRequest signUpRequest) {
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new RuntimeException("Error: Email is already in use!");
+            throw new EmailAlreadyExistsException("Error: Email is already in use!");
         }
 
         // Create new user's account
@@ -66,6 +72,6 @@ public class AuthService {
 
         userRepository.save(user);
 
-        return new MessageResponse(false, "User registered successfully!");
+        return new MessageResponse(true, "User registered successfully!");
     }
 }

@@ -23,38 +23,4 @@ public class MacroGoals {
 
     @OneToOne(mappedBy = "macroGoals")
     private User user;
-
-    // Getters and setters are now properly typed
-    public Double getProtein() {
-        return protein;
-    }
-
-    public void setProtein(Double protein) {
-        this.protein = protein;
-    }
-
-    public Double getCarbs() {
-        return carbs;
-    }
-
-    public void setCarbs(Double carbs) {
-        this.carbs = carbs;
-    }
-
-    public Double getFat() {
-        return fat;
-    }
-
-    public void setFat(Double fat) {
-        this.fat = fat;
-    }
-
-    // Added for calories
-    public Integer getCalories() {
-        return calories;
-    }
-
-    public void setCalories(Integer calories) {
-        this.calories = calories;
-    }
 }

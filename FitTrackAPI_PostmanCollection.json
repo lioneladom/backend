@@ -1,0 +1,292 @@
+{
+  "info": {
+    "name": "FitTrack API",
+    "_postman_id": "12345678-abcd-efgh-ijkl-1234567890ab",
+    "description": "Postman collection for testing FitTrack API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "AuthController",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/signup",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "signup"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ExerciseController",
+      "item": [
+        {
+          "name": "Get Exercise Library",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/exercise/library",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "exercise", "library"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Log Exercise",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"exerciseId\": 1,\n  \"reps\": 10,\n  \"sets\": 3,\n  \"weight\": 50.0,\n  \"duration\": 30\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/exercise/log",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "exercise", "log"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Exercise Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/exercise/logs",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "exercise", "logs"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2023-01-01",
+                  "description": "Optional date filter in YYYY-MM-DD format"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ProgressController",
+      "item": [
+        {
+          "name": "Get Weight Progress",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/progress/weight",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "progress", "weight"],
+              "query": [
+                {
+                  "key": "timeframe",
+                  "value": "last_month",
+                  "description": "Optional timeframe filter"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Log Weight",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/progress/weight",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "progress", "weight"],
+              "query": [
+                {
+                  "key": "weight",
+                  "value": "70.5",
+                  "description": "Weight value to log"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "FoodController",
+      "item": [
+        {
+          "name": "Search Food",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/food/search",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "food", "search"],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "apple",
+                  "description": "Search query string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Log Food",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"foodId\": 1,\n  \"quantity\": 2,\n  \"mealType\": \"lunch\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/food/log",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "food", "log"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Food Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/food/logs",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "food", "logs"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2023-01-01",
+                  "description": "Optional date filter in YYYY-MM-DD format"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "UserController",
+      "item": [
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"age\": 30,\n  \"gender\": \"male\",\n  \"height\": 180,\n  \"weight\": 75,\n  \"goalWeight\": 70,\n  \"activityLevel\": \"moderate\",\n  \"goal\": \"lose_weight\",\n  \"dailyCalorieGoal\": 2000,\n  \"macroGoals\": {\n    \"protein\": 150,\n    \"carbs\": 200,\n    \"fat\": 50\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
