@@ -1,10 +1,14 @@
 package com.fittrack.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "exercise_logs")
 public class ExerciseLog {
@@ -14,6 +18,7 @@ public class ExerciseLog {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,77 +34,4 @@ public class ExerciseLog {
     private LocalDateTime loggedAt;
 
     private LocalDate workoutDate;
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Exercise getExercise() {
-        return exercise;
-    }
-
-    public void setExercise(Exercise exercise) {
-        this.exercise = exercise;
-    }
-
-    public Integer getSets() {
-        return sets;
-    }
-
-    public void setSets(Integer sets) {
-        this.sets = sets;
-    }
-
-    public Integer getReps() {
-        return reps;
-    }
-
-    public void setReps(Integer reps) {
-        this.reps = reps;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
-
-    public LocalDateTime getLoggedAt() {
-        return loggedAt;
-    }
-
-    public void setLoggedAt(LocalDateTime loggedAt) {
-        this.loggedAt = loggedAt;
-    }
-
-    public LocalDate getWorkoutDate() {
-        return workoutDate;
-    }
-
-    public void setWorkoutDate(LocalDate workoutDate) {
-        this.workoutDate = workoutDate;
-    }
 }

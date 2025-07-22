@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @PutMapping("/me")
-    @PreAuthorize("hasRole('USER')")
+    //@PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> updateUser(@CurrentUser UserPrincipal currentUser,
                                         @RequestBody UserUpdateRequest updateRequest) {
         User user = userRepository.findById(currentUser.getId())

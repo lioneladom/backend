@@ -1,0 +1,54 @@
+{
+  "info": {
+    "name": "FitTrack API",
+    "_postman_id": "fittrack-collection-id",
+    "description": "Postman collection for FitTrack API testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Weight Log",
+      "item": [
+        {
+          "name": "Log Weight",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"weight\": 70.5\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/progress/weight",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "progress", "weight"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Weight Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/progress/weight",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "progress", "weight"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

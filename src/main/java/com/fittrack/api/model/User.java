@@ -3,22 +3,26 @@ package com.fittrack.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = {"foodLogs", "exerciseLogs", "weightLogs", "mealEntries"})
+@EqualsAndHashCode(exclude = {"foodLogs", "exerciseLogs", "weightLogs", "mealEntries"})
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,12 +55,15 @@ public class User {
     private MacroGoals macroGoals;
 
     @ElementCollection
+    @Builder.Default
     private Set<String> goals = new HashSet<>();
 
     @ElementCollection
+    @Builder.Default
     private Set<String> goalReasons = new HashSet<>();
 
     @ElementCollection
+    @Builder.Default
     private Set<String> healthBenefits = new HashSet<>();
 
     private String referralSource;
@@ -68,20 +75,24 @@ public class User {
     @UpdateTimestamp
     private Date updatedAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @Builder.Default
     private Set<FoodLog> foodLogs = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @Builder.Default
     private Set<ExerciseLog> exerciseLogs = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @Builder.Default
     private Set<WeightLog> weightLogs = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @Builder.Default
     private Set<MealEntry> mealEntries = new HashSet<>();
 
     public enum Gender {
@@ -96,7 +107,6 @@ public class User {
         LOSE, GAIN, TONE, MAINTAIN
     }
 
-    // Custom getter for age since it is calculated
     public Integer getAge() {
         if (dateOfBirth == null) return null;
         return Period.between(
@@ -105,7 +115,6 @@ public class User {
         ).getYears();
     }
 
-    // Custom setter for age to set dateOfBirth accordingly
     public void setAge(Integer age) {
         if (age == null) {
             this.dateOfBirth = null;
@@ -116,7 +125,6 @@ public class User {
         this.dateOfBirth = cal.getTime();
     }
 
-    // Custom getter and setter for gender mapping to sex field
     public String getGender() {
         return this.sex;
     }
@@ -125,12 +133,10 @@ public class User {
         this.sex = gender;
     }
 
-    // Overloaded setter for gender enum
     public void setGender(Gender gender) {
         this.sex = gender != null ? gender.name() : null;
     }
 
-    // Custom getter and setter for goal mapping to weeklyGoal field
     public String getGoal() {
         return this.weeklyGoal;
     }
@@ -139,12 +145,10 @@ public class User {
         this.weeklyGoal = goal;
     }
 
-    // Overloaded setter for goal enum
     public void setGoal(Goal goal) {
         this.weeklyGoal = goal != null ? goal.name() : null;
     }
 
-    // Custom getter and setter for activityLevel field with enum overload
     public String getActivityLevel() {
         return this.activityLevel;
     }
