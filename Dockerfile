@@ -1,5 +1,5 @@
 # Multi-stage Dockerfile for Spring Boot application
-FROM eclipse-temurin:17-jdk-jammy AS build
+FROM eclipse-temurin:21-jdk-jammy AS build
 
 # Set working directory
 WORKDIR /app
@@ -23,7 +23,7 @@ COPY src ./src
 RUN ./mvnw clean package -DskipTests
 
 # Runtime stage
-FROM eclipse-temurin:17-jre-jammy
+FROM eclipse-temurin:21-jre-jammy
 
 # Set working directory
 WORKDIR /app
