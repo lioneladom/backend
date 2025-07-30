@@ -29,9 +29,9 @@
 - **Root Directory:** `backend1`
 
 **Build & Deploy:**
-- **Runtime:** `Java`
-- **Build Command:** `mvn clean package -DskipTests`
-- **Start Command:** `java -jar target/fittrack-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod`
+- **Runtime:** `Docker`
+- **Build Command:** (leave empty - Docker will handle this)
+- **Start Command:** (leave empty - Docker will handle this)
 
 ### Step 5: Set Environment Variables
 Add these environment variables in Render dashboard:
@@ -42,8 +42,14 @@ SPRING_PROFILES_ACTIVE=prod
 JWT_SECRET=VGhpcyBpcyBhIHZlcnkgc2VjdXJlIGFuZCBsb25nIHJhbmRvbSBzZWNyZXQga2V5IQpKQk1uU2h2d3p5Q2Z4d2VydGh5dWlvcGFzZGZnUHJvZHVjdGlvbktleVJlbmRlcg==
 SUPABASE_URL=https://qindoeldnsrybeixezhs.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpbmRvZWxkbnNyeWJlaXhlemhzIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzgzNTkzNCwiZXhwIjoyMDY5NDExOTM0fQ.fp69aqLIE8UgYIwjh9MmFC9EcFBY917UXvH1k1GlAko
-ALLOWED_ORIGINS=https://your-frontend-domain.com
 ```
+
+**Optional Variables (set only if you have a deployed frontend):**
+```
+ALLOWED_ORIGINS=https://your-actual-frontend-domain.com
+```
+
+**Note:** If you don't set `ALLOWED_ORIGINS`, it will default to localhost URLs for testing. Update this later when you deploy your frontend.
 
 ### Step 6: Deploy
 1. Click "Create Web Service"
