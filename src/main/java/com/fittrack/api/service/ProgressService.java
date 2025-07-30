@@ -1,4 +1,3 @@
-// src/main/java/com/fittrack/service/ProgressService.java
 package com.fittrack.api.service;
 
 import com.fittrack.api.dto.response.ProgressResponse;
@@ -43,5 +42,17 @@ public class ProgressService {
         weightLog.setWeight(weight);
         weightLog.setLogDate(LocalDate.now());
         return weightLogRepository.save(weightLog);
+    }
+
+    public List<ProgressResponse> getGeneralProgress(User user) {
+        // For now, return weight progress as general progress
+        return getWeightProgress(user, null);
+    }
+
+    public List<ProgressResponse> getWeightLogs(User user) {
+        List<WeightLog> logs = weightLogRepository.findByUserOrderByLogDateAsc(user);
+        return logs.stream()
+                .map(log -> new ProgressResponse(log.getLogDate(), log.getWeight()))
+                .collect(Collectors.toList());
     }
 }

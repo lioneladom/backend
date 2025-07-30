@@ -56,7 +56,9 @@
           "name": "Get Exercise Library",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/exercise/library",
               "host": ["{{baseUrl}}"],
@@ -70,6 +72,7 @@
           "request": {
             "method": "POST",
             "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
               { "key": "Content-Type", "value": "application/json" }
             ],
             "body": {
@@ -88,7 +91,9 @@
           "name": "Get Exercise Logs",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/exercise/logs?date=2023-01-01",
               "host": ["{{baseUrl}}"],
@@ -109,7 +114,9 @@
           "name": "Get Weight Progress",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/progress/weight?timeframe=last_month",
               "host": ["{{baseUrl}}"],
@@ -125,14 +132,48 @@
           "name": "Log Weight",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"weight\": 70.5\n}"
+            },
             "url": {
-              "raw": "{{baseUrl}}/api/progress/weight?weight=70.5",
+              "raw": "{{baseUrl}}/api/progress/weight",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "progress", "weight"],
-              "query": [
-                { "key": "weight", "value": "70.5", "description": "Weight value to log" }
-              ]
+              "path": ["api", "progress", "weight"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Progress",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/progress",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "progress"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Weight Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/progress/weight/logs",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "progress", "weight", "logs"]
             }
           },
           "response": []
@@ -146,7 +187,9 @@
           "name": "Search Food",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/food/search?query=apple",
               "host": ["{{baseUrl}}"],
@@ -159,10 +202,26 @@
           "response": []
         },
         {
+          "name": "Get Food Library",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/food/library",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "food", "library"]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Log Food",
           "request": {
             "method": "POST",
             "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
               { "key": "Content-Type", "value": "application/json" }
             ],
             "body": {
@@ -181,7 +240,9 @@
           "name": "Get Food Logs",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/food/logs?date=2023-01-01",
               "host": ["{{baseUrl}}"],
@@ -206,9 +267,9 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/users/me",
+              "raw": "{{baseUrl}}/api/users/me",
               "host": ["{{baseUrl}}"],
-              "path": ["users", "me"]
+              "path": ["api", "users", "me"]
             }
           },
           "response": []
@@ -226,9 +287,9 @@
               "raw": "{\n  \"name\": \"John Doe\",\n  \"age\": 30,\n  \"gender\": \"MALE\",\n  \"height\": 180,\n  \"weight\": 75,\n  \"goalWeight\": 70,\n  \"activityLevel\": \"MODERATE\",\n  \"goal\": \"LOSE\",\n  \"dailyCalorieGoal\": 2000,\n  \"macroGoals\": {\n    \"protein\": 150,\n    \"carbs\": 200,\n    \"fat\": 50\n  }\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/users/me",
+              "raw": "{{baseUrl}}/api/users/me",
               "host": ["{{baseUrl}}"],
-              "path": ["users", "me"]
+              "path": ["api", "users", "me"]
             }
           },
           "response": []

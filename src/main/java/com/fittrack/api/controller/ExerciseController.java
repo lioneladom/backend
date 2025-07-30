@@ -1,6 +1,7 @@
 package com.fittrack.api.controller;
 
 import com.fittrack.api.dto.request.ExerciseLogRequest;
+import com.fittrack.api.dto.response.ApiResponse;
 import com.fittrack.api.dto.response.ExerciseResponse;
 import com.fittrack.api.model.Exercise;
 import com.fittrack.api.model.ExerciseLog;
@@ -28,13 +29,13 @@ public class ExerciseController {
     private UserService userService;
 
     @GetMapping("/library")
-    public ResponseEntity<List<ExerciseResponse>> getExerciseLibrary() {
+    public ResponseEntity<ApiResponse<List<ExerciseResponse>>> getExerciseLibrary() {
         List<ExerciseResponse> exercises = exerciseService.getAllExercises();
-        return ResponseEntity.ok(exercises);
+        return ResponseEntity.ok(ApiResponse.success("Exercise library retrieved successfully", exercises));
     }
 
     @PostMapping("/log")
-    public ResponseEntity<?> logExercise(@RequestBody ExerciseLogRequest exerciseLogRequest) {
+    public ResponseEntity<ApiResponse<ExerciseLog>> logExercise(@RequestBody ExerciseLogRequest exerciseLogRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -51,11 +52,11 @@ public class ExerciseController {
                 .orElseThrow(() -> new RuntimeException("Exercise not found"));
 
         ExerciseLog exerciseLog = exerciseService.logExercise(user, exercise, reps, sets, weight, duration);
-        return ResponseEntity.ok(exerciseLog);
+        return ResponseEntity.ok(ApiResponse.success("Exercise logged successfully", exerciseLog));
     }
 
      @GetMapping("/logs")
-    public ResponseEntity<List<ExerciseLog>> getExerciseLogs(
+    public ResponseEntity<ApiResponse<List<ExerciseLog>>> getExerciseLogs(
             @RequestParam(required = false) String date) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName())
@@ -64,6 +65,6 @@ public class ExerciseController {
         // Parse the date string to LocalDate if provided
         LocalDate parsedDate = date != null ? LocalDate.parse(date) : null;
         List<ExerciseLog> logs = exerciseService.getExerciseLogs(user, parsedDate);
-        return ResponseEntity.ok(logs);
+        return ResponseEntity.ok(ApiResponse.success("Exercise logs retrieved successfully", logs));
     }
 }

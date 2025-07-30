@@ -13,7 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("/me")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<UserProfileDto> getCurrentUser(@CurrentUser UserPrincipal currentUser) {
+    public ResponseEntity<ApiResponse<UserProfileDto>> getCurrentUser(@CurrentUser UserPrincipal currentUser) {
         User user = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         
@@ -43,12 +43,12 @@ public class UserController {
                 user.getMacroGoals()
         );
         
-        return ResponseEntity.ok(userProfile);
+        return ResponseEntity.ok(ApiResponse.success("User profile retrieved successfully", userProfile));
     }
 
     @PutMapping("/me")
-    //@PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> updateUser(@CurrentUser UserPrincipal currentUser,
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ApiResponse<Void>> updateUser(@CurrentUser UserPrincipal currentUser,
                                         @RequestBody UserUpdateRequest updateRequest) {
         User user = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -101,6 +101,6 @@ public class UserController {
         
         userRepository.save(user);
         
-        return ResponseEntity.ok(new ApiResponse(true, "User updated successfully"));
+        return ResponseEntity.ok(ApiResponse.success("User updated successfully"));
     }
 }

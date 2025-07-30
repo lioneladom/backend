@@ -63,4 +63,11 @@ public class FoodService {
         response.setServingSize(food.getServingSize());
         return response;
     }
+
+    public List<FoodResponse> getAllFood() {
+        List<Food> foods = foodRepository.findAll();
+        return foods.stream()
+                .map(this::convertToFoodResponse)
+                .collect(Collectors.toList());
+    }
 }

@@ -1,6 +1,6 @@
-// src/main/java/com/fittrack/controller/ProgressController.java
 package com.fittrack.api.controller;
 
+import com.fittrack.api.dto.response.ApiResponse;
 import com.fittrack.api.dto.response.ProgressResponse;
 import com.fittrack.api.model.User;
 import com.fittrack.api.service.ProgressService;
@@ -24,23 +24,56 @@ public class ProgressController {
     private UserService userService;
 
     @GetMapping("/weight")
-    public ResponseEntity<List<ProgressResponse>> getWeightProgress(
+    public ResponseEntity<ApiResponse<List<ProgressResponse>>> getWeightProgress(
             @RequestParam(required = false) String timeframe) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         List<ProgressResponse> progress = progressService.getWeightProgress(user, timeframe);
-        return ResponseEntity.ok(progress);
+        return ResponseEntity.ok(ApiResponse.success("Weight progress retrieved successfully", progress));
     }
 
-    @PostMapping("/weight")
-    public ResponseEntity<?> logWeight(@RequestParam Double weight) {
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<ProgressResponse>>> getProgress() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        progressService.logWeight(user, weight);
-        return ResponseEntity.ok().build();
+        // You can customize this to return general progress data
+        List<ProgressResponse> progress = progressService.getGeneralProgress(user);
+        return ResponseEntity.ok(ApiResponse.success("General progress retrieved successfully", progress));
+    }
+
+    @GetMapping("/weight/logs")
+    public ResponseEntity<ApiResponse<List<ProgressResponse>>> getWeightLogs() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<ProgressResponse> weightLogs = progressService.getWeightLogs(user);
+        return ResponseEntity.ok(ApiResponse.success("Weight logs retrieved successfully", weightLogs));
+    }
+
+    @PostMapping("/weight")
+    public ResponseEntity<ApiResponse<Void>> logWeight(@RequestBody WeightRequest weightRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        progressService.logWeight(user, weightRequest.getWeight());
+        return ResponseEntity.ok(ApiResponse.success("Weight logged successfully"));
+    }
+
+    public static class WeightRequest {
+        private Double weight;
+
+        public Double getWeight() {
+            return weight;
+        }
+
+        public void setWeight(Double weight) {
+            this.weight = weight;
+        }
     }
 }
